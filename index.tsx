@@ -9,8 +9,8 @@ interface AppState {
 }
 
 const makePoints = (size: number) =>
-  Array.from(new Array(size), (x, i) => i).flatMap(i =>
-    Array.from(new Array(size), (x, k) => k).map(k => ({ x: i, y: k }))
+  Array.from(new Array(size), (_, i) => i).flatMap(i =>
+    Array.from(new Array(size), (_, k) => k).map(k => ({ x: i, y: k }))
   );
 
 const colors = {
@@ -19,8 +19,15 @@ const colors = {
   building: "#600b1c"
 };
 
-const createScene = (): any[] => {
-  return;
+interface SceneObject {
+  x: number,
+  y: number,
+  points: [number, number][]
+  color: string
+}
+
+const createScene = (): SceneObject[] => {
+  return [];
 };
 
 const getColor = (() => {
@@ -30,38 +37,27 @@ const getColor = (() => {
   };
 })();
 
-class App extends Component<AppProps, AppState> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: "React"
-    };
-  }
+const App = () => 
+  <svg
+    width="100vw"
+    height="100vh"
+    preserveAspectRatio="none"
+    viewBox="0 0 100 100"
+  >
+    {makePoints(100)
+      .map(({ x, y }) => ({ x, y, color: getColor({ x, y }) }))
+      .map(({ x, y, color }) => (
+        <rect
+          x={x}
+          y={y}
+          width="1"
+          height="1"
+          fill={color}
+          stroke="white"
+          stroke-width=".1"
+        />
+      ))}
+  </svg>
 
-  render() {
-    return (
-      <svg
-        width="100vw"
-        height="100vh"
-        preserveAspectRatio="none"
-        viewBox="0 0 100 100"
-      >
-        {makePoints(100)
-          .map(({ x, y }) => ({ x, y, color: getColor({ x, y }) }))
-          .map(({ x, y, color }) => (
-            <rect
-              x={x}
-              y={y}
-              width="1"
-              height="1"
-              fill={color}
-              stroke="white"
-              stroke-width=".1"
-            />
-          ))}
-      </svg>
-    );
-  }
-}
 
 render(<App />, document.getElementById("root"));
