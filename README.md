@@ -1,2 +1,2 @@
-# A programmatically generated cyberpunk city
+# programmatically generated cyberpunk city art
 
