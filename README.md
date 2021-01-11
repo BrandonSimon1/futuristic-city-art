@@ -1,3 +1,2 @@
-# react-ts-1st5ln
+# A programmatically generated cyberpunk city
 
-[Edit on StackBlitz ⚡️](https://stackblitz.com/edit/react-ts-1st5ln)
