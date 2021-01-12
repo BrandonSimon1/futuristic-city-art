@@ -1,17 +1,10 @@
 import React, { Component } from "react";
 import { render } from "react-dom";
-import Hello from "./Hello";
 import "./style.css";
 
-interface AppProps {}
-interface AppState {
-  name: string;
-}
-sadfasdfasdf
-
 const makePoints = (size: number) =>
-  Array.from(new Array(size), (_, i) => i).flatMap(i =>
-    Array.from(new Array(size), (_, k) => k).map(k => ({ x: i, y: k }))
+  Array.from(new Array(size), (_, i) => i).flatMap((i) =>
+    Array.from(new Array(size), (_, k) => k).map((k) => ({ x: i, y: k }))
   );
 
 const colors = {
@@ -21,10 +14,10 @@ const colors = {
 };
 
 interface SceneObject {
-  x: number,
-  y: number,
-  points: [number, number][]
-  color: string
+  x: number;
+  y: number;
+  points: [number, number][];
+  color: string;
 }
 
 const createScene = (): SceneObject[] => {
@@ -38,7 +31,7 @@ const getColor = (() => {
   };
 })();
 
-const App = () => 
+const App = () => (
   <svg
     width="100vw"
     height="100vh"
@@ -59,6 +52,6 @@ const App = () =>
         />
       ))}
   </svg>
-
+);
 
 render(<App />, document.getElementById("root"));
