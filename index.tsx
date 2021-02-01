@@ -5,7 +5,7 @@ import pointColors from "./scene";
 import { PointColor } from "./baseGeometry";
 
 const App = () => {
-  const [s, set] = useState([] as PointColor[]);
+  const [s, set] = useState<PointColor[]>([]);
   useEffect(() => {
     pointColors().then(set);
   }, []);
@@ -17,15 +17,15 @@ const App = () => {
       preserveAspectRatio="none"
       viewBox="0 0 100 100"
     >
-      {s.map(({ point: { x, y }, color }) => (
+      {s.map(({ point: { x, y }, color, strokeColor }) => (
         <rect
           x={x}
           y={y}
           width="1"
           height="1"
           fill={color}
-          stroke="white"
-          stroke-width=".1"
+          stroke={strokeColor}
+          strokeWidth=".1"
         />
       ))}
     </svg>

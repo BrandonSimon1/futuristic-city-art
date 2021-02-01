@@ -6,7 +6,13 @@ export const canvas: Space = {
   getPoints: () =>
     Array.from(new Array(100), (_, i) => i).flatMap((i) =>
       Array.from(new Array(100), (_, k) => k).map((k) => ({ x: i, y: k }))
-    )
+    ),
+  size: {
+    xMin: 0,
+    xMax: 100,
+    yMin: 0,
+    yMax: 100
+  }
 };
 
 export class Rectangle implements Shape {
