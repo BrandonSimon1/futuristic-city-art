@@ -25,7 +25,7 @@ const App = () => {
           height="1"
           fill={color}
           stroke={strokeColor}
-          strokeWidth=".1"
+          strokeWidth=".08"
         />
       ))}
     </svg>
