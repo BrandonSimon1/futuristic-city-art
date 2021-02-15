@@ -3,13 +3,11 @@ import { canvas, Rectangle, Circle } from "./objects";
 import * as tf from "@tensorflow/tfjs";
 import { zip } from "lodash";
 
-const { yellow, orange, red, darkpink, violet } = {
-  yellow: "#ffd319",
-  orange: "#ff901f",
-  red: "#ff2975",
-  darkpink: "#f222ff",
-  violet: "#8c1eff"
-};
+const yellow = "#ffd319"
+const orange = "#ff901f"
+const red = "#ff2975"
+const darkpink = "#f222ff"
+const violet = "#8c1eff"
 
 const city = async () => {
   const { xMin, xMax, yMax, yMin } = canvas.size;
@@ -18,41 +16,29 @@ const city = async () => {
   const totalHeight = yMax - yMin
   const sunHeight = 50;
   const sunRadius = .8 * (totalWidth / 2)
-  const averageHeight = 20;
-  const heightDeviation = 10;
-  const averageWidth = sunRadius / 6;
-  const widthDeviation = averageWidth / 3;
+  const averageWidth = totalWidth / 15;
+  const widthDeviation = averageWidth / 2;
 
-  const buildingColors = [
-    violet
-  ];
-  const heights = await tf
-    .randomNormal([numBuildings, 1], sunHeight, sunRadius / 4)
-    .array()
-    .then((p: number[]) => (p instanceof Array ? p.flat() : []));
   const widths = await tf
     .randomNormal([numBuildings, 1], averageWidth, widthDeviation)
     .array()
     .then((p: number[]) => (p instanceof Array ? p.flat() : []));
-  const yPos = heights.map((height) => yMax - height / 2);
   const xPos = await tf
-    .randomUniform([numBuildings, 1], totalWidth / 2 - sunRadius * .75, totalWidth / 2 + sunRadius  * .75)
+    .randomUniform([numBuildings, 1], xMin, xMax)
     .array()
     .then((p: number[]) => (p instanceof Array ? p.flat() : []));
-  const colors = Array(numBuildings)
-    .fill(0)
-    .map(() => buildingColors[Math.floor(Math.random() * buildingColors.length)])
+  const heights = xPos.map(x => (sunHeight + sunRadius * .5 - Math.abs(((xMax - xMin) / 2) - x)) * Math.random())
+  const yPos = heights.map((height) => yMax - height / 2);
   const zipped: [height: number, width:  number, x: number, y: number, color: string][] = zip(
     heights,
     widths,
     xPos,
-    yPos,
-    colors
+    yPos
   );
-  console.log(sunRadius)
-  return (zipped.map(([height, width, x, y, color]) => {
-    return new Rectangle({ x, y }, width, height, color);
+  return (zipped.map(([height, width, x, y]) => {
+    return new Rectangle({ x, y }, width, height, violet);
   }) as Shape[]).concat(
+    new Circle({ x: 50, y: totalHeight - sunHeight }, sunRadius * .9, yellow),
     new Circle({ x: 50, y: totalHeight - sunHeight }, sunRadius, orange),
   );
 };
@@ -62,7 +48,7 @@ export default async () => {
   return createScene(
     c,
     canvas,
-    violet,
-    'black'
+    darkpink,
+    red
   );
 };
