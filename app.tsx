@@ -17,10 +17,10 @@ const App = () => {
     a.click();
   };
   const onMouseMove = () => {
+    setButtonVisible(true);
     if (buttonTimer) {
       window.clearTimeout(buttonTimer);
     }
-    setButtonVisible(true);
     const timeout = window.setTimeout(() => {
       setButtonVisible(false);
     }, 50);
