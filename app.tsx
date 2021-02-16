@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useRef, Fragment } from "react";
 import "./style.css";
 import Scene from "./scene";
-import { canvas } from "./objects";
-import { PointColor } from "./baseGeometry";
 
 const App = () => {
   const [buttonVisible, setButtonVisible] = useState<boolean>(false);
