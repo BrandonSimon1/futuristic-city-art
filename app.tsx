@@ -34,7 +34,7 @@ const App = () => {
         onClick={exportSVG}
         className="exportButton"
       >
-        Export
+        Export SVG
       </button>
     </div>
   );
