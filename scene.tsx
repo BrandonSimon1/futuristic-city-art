@@ -1,7 +1,8 @@
-import { createScene, Shape } from "./baseGeometry";
+import { createScene, PointColor, Shape } from "./baseGeometry";
 import { canvas, Rectangle, Circle } from "./objects";
 import * as tf from "@tensorflow/tfjs";
 import { zip } from "lodash";
+import React, { useState, useEffect } from 'react'
 
 const yellow = "#ffd319"
 const orange = "#ff901f"
@@ -11,12 +12,13 @@ const violet = "#8c1eff"
 
 const city = async () => {
   const { xMin, xMax, yMax, yMin } = canvas.size;
-  const numBuildings = 50;
+  const numBuildings = 150;
   const totalWidth = xMax - xMin
   const totalHeight = yMax - yMin
-  const sunHeight = 50;
-  const sunRadius = .8 * (totalWidth / 2)
-  const averageWidth = totalWidth / 15;
+  const sunHeight = totalHeight / 2;
+  const sunX = Math.ceil(totalWidth / 2)
+  const sunRadius = totalHeight / 2 * .9
+  const averageWidth = totalHeight / 15;
   const widthDeviation = averageWidth / 2;
 
   const widths = await tf
@@ -38,17 +40,24 @@ const city = async () => {
   return (zipped.map(([height, width, x, y]) => {
     return new Rectangle({ x, y }, width, height, violet);
   }) as Shape[]).concat(
-    new Circle({ x: 50, y: totalHeight - sunHeight }, sunRadius * .9, yellow),
-    new Circle({ x: 50, y: totalHeight - sunHeight }, sunRadius, orange),
+    new Circle({ x: sunX, y: totalHeight - sunHeight }, sunRadius * .9, yellow),
+    new Circle({ x: sunX, y: totalHeight - sunHeight }, sunRadius, orange),
   );
 };
 
-export default async () => {
-  const c = await city();
-  return createScene(
+const Scene = ({svgRef}: {svgRef: React.Ref<SVGSVGElement>}) => {
+  const [c,setShapes] = useState<Shape[]>([])
+  useEffect(() => {
+    city().then(setShapes)
+  }, [])
+  if (!c.length) return null
+  const Scene = createScene(
     c,
     canvas,
     darkpink,
     red
   );
+  return <Scene svgRef={svgRef}/>
 };
+
+export default Scene

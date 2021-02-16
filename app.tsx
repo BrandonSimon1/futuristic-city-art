@@ -1,15 +1,12 @@
 import React, { useEffect, useState, useRef, Fragment } from "react";
 import "./style.css";
-import pointColors from "./scene";
+import Scene from "./scene";
+import { canvas } from "./objects";
 import { PointColor } from "./baseGeometry";
 
 const App = () => {
-  const [s, set] = useState<PointColor[]>([]);
   const [buttonVisible, setButtonVisible] = useState<boolean>(false);
   const [buttonTimer, setButtonTimer] = useState<number>(0);
-  useEffect(() => {
-    pointColors().then(set);
-  }, []);
   const svgRef = useRef<SVGSVGElement>(null);
   const exportSVG = () => {
     const blob = new Blob([svgRef.current?.outerHTML ?? ""], {
@@ -31,28 +28,9 @@ const App = () => {
     }, 50);
     setButtonTimer(timeout);
   };
-  if (!s.length) return <div></div>;
   return (
     <div onMouseMove={onMouseMove}>
-      <svg
-        width="100vw"
-        height="100vh"
-        preserveAspectRatio="none"
-        viewBox="0 0 100 100"
-        ref={svgRef}
-      >
-        {s.map(({ point: { x, y }, color, strokeColor }) => (
-          <rect
-            x={x}
-            y={y}
-            width="1"
-            height="1"
-            fill={color}
-            stroke={strokeColor}
-            strokeWidth=".08"
-          />
-        ))}
-      </svg>
+      <Scene svgRef={svgRef} />
       <button
         style={{ display: buttonVisible ? "" : "none" }}
         onClick={exportSVG}
