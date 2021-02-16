@@ -6,13 +6,13 @@ import { PointColor } from "./baseGeometry";
 const App = () => {
   const [s, set] = useState<PointColor[]>([]);
   const [buttonVisible, setButtonVisible] = useState<boolean>(false);
-  const [buttonTimer, setButtonTimer] = useState(0);
+  const [buttonTimer, setButtonTimer] = useState<number>(0);
   useEffect(() => {
     pointColors().then(set);
   }, []);
   const svgRef = useRef<SVGSVGElement>(null);
   const exportSVG = () => {
-    const blob = new Blob([svgRef.current?.innerHTML ?? ""], {
+    const blob = new Blob([svgRef.current?.outerHTML ?? ""], {
       type: "image/svg+xml"
     });
     const exportUrl = URL.createObjectURL(blob);
@@ -22,13 +22,14 @@ const App = () => {
     a.click();
   };
   const onMouseMove = () => {
-    if (buttonTimer) clearTimeout(buttonTimer);
+    if (buttonTimer) {
+      window.clearTimeout(buttonTimer);
+    }
     setButtonVisible(true);
-    setButtonTimer(
-      setTimeout(() => {
-        setButtonVisible(false);
-      }, 2000)
-    );
+    const timeout = window.setTimeout(() => {
+      setButtonVisible(false);
+    }, 50);
+    setButtonTimer(timeout);
   };
   if (!s.length) return <div></div>;
   return (

@@ -29,7 +29,7 @@ const city = async () => {
     .then((p: number[]) => (p instanceof Array ? p.flat() : []));
   const heights = xPos.map(x => (sunHeight + sunRadius * .5 - Math.abs(((xMax - xMin) / 2) - x)) * Math.random())
   const yPos = heights.map((height) => yMax - height / 2);
-  const zipped: [height: number, width:  number, x: number, y: number, color: string][] = zip(
+  const zipped: [height: number, width:  number, x: number, y: number][] = zip(
     heights,
     widths,
     xPos,
