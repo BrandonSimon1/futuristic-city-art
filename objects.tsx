@@ -15,7 +15,7 @@ export const canvas: Space = {
   },
   size: {
     xMin: 0,
-    xMax: (screen.width / screen.height) * 100,
+    xMax: Math.round(screen.width / screen.height) * 100,
     yMin: 0,
     yMax: 100
   },
@@ -28,8 +28,8 @@ export const canvas: Space = {
   }) {
     return (
       <svg
-        width="100vw"
-        height="100vh"
+        width={screen.width}
+        height={screen.height}
         viewBox={`${canvas.size.xMin} ${canvas.size.yMin} ${canvas.size.xMax} ${canvas.size.yMax}`}
         preserveAspectRatio="none"
         ref={svgRef}
